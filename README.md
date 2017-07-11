@@ -1,14 +1,18 @@
 # MoovOne test Symfony
 
 L'objectif de ce test est de réaliser une micro API.
-Cette api devra retourner une liste de films via une liste de films.
-- Vous devez, installer le bundle [FosRestBundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html), le configurer et l'utiliser avec les best practices.
-- Vous devez créer l'entité `movies`
-- Créer la route qui retournera la liste des films au format JSON.
+Cette api devra retourner une liste de films.
+
+### minimum requis : 
+
+- utiliser le bundle [FosRestBundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html) 
+- créer l'entité `movies`
+- créer la route qui retournera la liste des films au format REST/JSON.
+- privilégiez les annotations
 
 Voici le résultat voulu : 
 
-`/api/v1/movies`
+`/v1/movies`
 
 ```
 {
@@ -22,13 +26,18 @@ Voici le résultat voulu :
 }
 ```
 
-
-
 ### bonus : 
 
-- il serait apprécié que vous ajoutiez les film via une fixture et que votre controller soit convert par un lot de test unitaires/fonctionnels
-- il serait apprécié que la liste des films soit ordonable via le param "order" enum(name) et "dir" enum(asc|desc)
-- il serait apprécié que la liste des films soit paginable avec un bundle comme PagerFanta 
+il serait fortement apprécié que vous alliez plus loins et ...
+
+- que vous ajoutiez les films via une fixture 
+- que votre controller soit convert par un lot de test unitaires/fonctionnels
+- que la liste des films soit ordonable via le param "order" enum(name) et "dir" enum(asc|desc)
+- que la liste des films soit paginable avec un bundle comme PagerFanta 
+- que le controller soit serialisé via un group "movie"
+- que les id soient remplacés à la volée par un hashid via un event listener
+- que vous ajoutiez la method post /v1/movies et que vous utilisiez un form type
+- que vous ajoutiez la methode delete avec un soft deleted 
 
 ### astuce : 
 
