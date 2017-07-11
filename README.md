@@ -12,29 +12,36 @@ Voici le résultat voulu :
 
 ```
 {
+    "total":"30"
     "count":"3"
     "data":[
         {"id":0,"name":"Harry Potter et la chambre des secrets"},
         {"id":0,"name":"Fast and Furious 8"},
-        {"id":0,"name":"Taken 3"}        
+        {"id":0,"name":"Taken 3"}  
+        [...]
     ]
 }
 ```
 
 
-### Lancer l'application
 
-Nous vous avons pré-configuré un simple projet symfony pour vos développement.
+### bonus : 
 
-astuce : 
+- il serait apprécié que vous ajoutiez les film via une fixture et que votre controller soit convert par un lot de test unitaires/fonctionnels
+- il serait apprécié que la liste des films soit ordonable via le param "order" enum(name) et "dir" enum(asc|desc)
+- il serait apprécié que la liste des films soit paginable avec un bundle comme PagerFanta 
+
+### astuce : 
 
 - Tester votre API avec PostMan ou Rest API Tester de PhpStorm
 
-Pour lancer le server nodeJS : 
+- Symfony contient un serveur de dev 
 
 ```
-php bin/console server:run
+$ php bin/console server:run
 ```
 
 Votre application est accessible à l'adressse `http://localhost:8000`.
+
+
 
