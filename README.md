@@ -18,7 +18,6 @@ Voici le résultat voulu :
         {"id":0,"name":"Harry Potter et la chambre des secrets"},
         {"id":0,"name":"Fast and Furious 8"},
         {"id":0,"name":"Taken 3"}  
-        [...]
     ]
 }
 ```
