@@ -1,8 +1,8 @@
 # MoovOne test Symfony
 
-L'ojectif de ce test est de réaliser une micro API.
+L'objectif de ce test est de réaliser une micro API.
 Cette api devra retourner une liste de films via une liste de films.
-- Vous devez, installer le bundle [FosRestBundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html) et le configurer.
+- Vous devez, installer le bundle [FosRestBundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html), le configurer et l'utiliser avec les best practices.
 - Vous devez créer l'entité `movies`
 - Créer la route qui retournera la liste des films au format JSON.
 
