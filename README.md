@@ -38,10 +38,9 @@ il serait fortement apprécié que vous alliez plus loins et ...
 - que les id soient remplacés à la volée par un hashid via un event listener
 - que vous ajoutiez la method post /v1/movies et que vous utilisiez un form type
 - que vous ajoutiez la methode delete avec un soft deleted 
+- respet des PSR
 
 ### astuce : 
-
-- Tester votre API avec PostMan ou Rest API Tester de PhpStorm
 
 - Symfony contient un serveur de dev 
 
