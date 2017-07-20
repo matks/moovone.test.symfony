@@ -4,6 +4,12 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    moovone_movie.rss_handler:
+        class: AppBundle\View\WithTotalViewHandler
+        arguments: ['@jms_serializer']
+
+    moovone_movie.view_handler:
+        parent: 'fos_rest.view_handler.default'
+        calls:
+            - ['registerHandler', [ 'moovone_format', [ '@moovone_movie.rss_handler', 'createResponse'] ] ]
