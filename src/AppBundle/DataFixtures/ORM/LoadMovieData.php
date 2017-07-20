@@ -2,16 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Movie;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\Movie;
 
 class LoadMovieData implements FixtureInterface
 {
     /**
-     * Load data fixtures with the passed EntityManager
-     *
-     *
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -23,12 +21,11 @@ class LoadMovieData implements FixtureInterface
         $manager->persist($fast);
         $manager->persist($taken);
 
-        for ($i = 1; $i <= 27; $i++) {
+        for ($i = 1; $i <= 27; ++$i) {
             $randomMovie = new Movie(sprintf('Another great movie %d', $i));
             $manager->persist($randomMovie);
         }
 
         $manager->flush();
     }
-
 }

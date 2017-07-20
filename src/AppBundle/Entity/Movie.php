@@ -5,8 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Movie
- *
  * @ORM\Table(name="movie")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MovieRepository")
  */
@@ -37,8 +35,6 @@ class Movie
     }
 
     /**
-     * Get id
-     *
      * @return int
      */
     public function getId()
@@ -47,8 +43,6 @@ class Movie
     }
 
     /**
-     * Set name
-     *
      * @param string $name
      *
      * @return Movie
@@ -61,8 +55,6 @@ class Movie
     }
 
     /**
-     * Get name
-     *
      * @return string
      */
     public function getName()
@@ -70,4 +62,3 @@ class Movie
         return $this->name;
     }
 }
-
