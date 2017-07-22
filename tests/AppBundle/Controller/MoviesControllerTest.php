@@ -4,15 +4,12 @@ namespace Tests\AppBundle\Controller;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use JMS\Serializer\SerializerInterface;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class MoviesControllerTest extends WebTestCase
+class MoviesControllerTest extends BaseController
 {
-    private $container;
-
-    public function testIndex()
+    public function testGetMovies()
     {
         $client = static::createClient();
 
@@ -42,67 +39,60 @@ class MoviesControllerTest extends WebTestCase
         $this->assertJsonContent($response, $expectedData);
     }
 
-    public function setUp()
+    public function testGetMoviesWithBadInput()
     {
-        self::bootKernel();
-        $this->container = self::$kernel->getContainer();
+        $client = static::createClient();
 
-        parent::setup();
-        $fixtures = array(
-            'AppBundle\DataFixtures\ORM\LoadMovieData',
-        );
+        $crawler = $client->request('GET', '/v1/movies?order=bad');
+        $response1 = $client->getResponse();
 
-        $this->loadFixtures($fixtures, null, 'doctrine', ORMPurger::PURGE_MODE_TRUNCATE);
+        $expectedData1 = [
+            'error' => 'Bad query',
+            'message' => 'Only allowed value for order is \'name\'',
+        ];
+
+        $this->assertJsonResponse($response1, Response::HTTP_BAD_REQUEST);
+        $this->assertJsonContent($response1, $expectedData1);
+
+        $crawler = $client->request('GET', '/v1/movies?order=name&dir=a');
+        $response2 = $client->getResponse();
+
+        $expectedData2 = [
+            'error' => 'Bad query',
+            'message' => 'Dir must be one of those: asc, desc',
+        ];
+
+        $this->assertJsonResponse($response2, Response::HTTP_BAD_REQUEST);
+        $this->assertJsonContent($response2, $expectedData2);
     }
 
-    /**
-     * @param Response $response
-     * @param string $status
-     */
-    protected function assertJsonResponse(Response $response, $status)
+    public function testGetMoviesWithOrderAndDirection()
     {
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertEquals($status, $response->getStatusCode());
+        $client = static::createClient();
 
-        $content = $response->getContent();
-        $this->assertIsValidJson($content);
-    }
+        $crawler = $client->request('GET', '/v1/movies?order=name&dir=desc');
+        $response = $client->getResponse();
 
-    /**
-     * @param Response $response
-     *
-     * @param array $expectedData
-     */
-    protected function assertJsonContent(Response $response, array $expectedData)
-    {
-        $realData = $response->getContent();
+        $expectedData = [
+            'total' => '30',
+            'count' => 3,
+            'data' => [
+                [
+                    'id' => 3,
+                    'name' => 'Taken 3'
+                ],
+                [
+                    'id' => 1,
+                    'name' => 'Harry Potter et la chambre des secrets'
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Fast and Furious 8'
+                ],
+            ]
+        ];
 
-        $this->assertEquals($this->serialize($expectedData), $realData);
-    }
-
-    /**
-     * @param string $json
-     *
-     * @return bool
-     */
-    protected function assertIsValidJson($json)
-    {
-        $data = json_decode($json);
-
-        return (null !== $data);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return string
-     */
-    protected function serialize(array $data)
-    {
-        /** @var SerializerInterface $serializer */
-        $serializer = $this->container->get('jms_serializer');
-        $json = $serializer->serialize($data, 'json');
-
-        return $json;
+        $this->assertJsonResponse($response, Response::HTTP_OK);
+        $this->assertJsonContent($response, $expectedData);
     }
 }

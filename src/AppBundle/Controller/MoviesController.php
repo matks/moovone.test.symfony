@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\HttpFoundation\Request;
 
 class MoviesController extends Controller
 {
@@ -14,10 +15,13 @@ class MoviesController extends Controller
      * @return array
      * @View()
      */
-    public function getMoviesAction()
+    public function getMoviesAction(Request $request)
     {
+        $order = $request->get('order');
+        $dir = $request->get('dir');
+
         $movieRepository = $this->getMoviesRepository();
-        $movies = $movieRepository->getMovies(self::ITEMS_PER_PAGE, 0);
+        $movies = $movieRepository->getMovies(self::ITEMS_PER_PAGE, 0, $order, $dir);
         $total = $movieRepository->countAll();
 
         return [
