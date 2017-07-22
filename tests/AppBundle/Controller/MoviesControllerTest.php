@@ -17,7 +17,7 @@ class MoviesControllerTest extends BaseController
         $response = $client->getResponse();
 
         $expectedData = [
-            'total' => '30',
+            'total' => 30,
             'count' => 3,
             'data' => [
                 [
@@ -74,7 +74,7 @@ class MoviesControllerTest extends BaseController
         $response = $client->getResponse();
 
         $expectedData = [
-            'total' => '30',
+            'total' => 30,
             'count' => 3,
             'data' => [
                 [
@@ -88,6 +88,36 @@ class MoviesControllerTest extends BaseController
                 [
                     'id' => 2,
                     'name' => 'Fast and Furious 8'
+                ],
+            ]
+        ];
+
+        $this->assertJsonResponse($response, Response::HTTP_OK);
+        $this->assertJsonContent($response, $expectedData);
+    }
+
+    public function testGetMoviesWithPagination()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/v1/movies?page=3');
+        $response = $client->getResponse();
+
+        $expectedData = [
+            'total' => 30,
+            'count' => 3,
+            'data' => [
+                [
+                    'id' => 7,
+                    'name' => "Another great movie 4"
+                ],
+                [
+                    'id' => 8,
+                    'name' => "Another great movie 5"
+                ],
+                [
+                    'id' => 9,
+                    'name' => "Another great movie 6"
                 ],
             ]
         ];

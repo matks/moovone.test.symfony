@@ -2,6 +2,7 @@
 
 namespace AppBundle\View;
 
+use AppBundle\Domain\PaginatedCollection;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
 use JMS\Serializer\SerializerInterface;
@@ -35,12 +36,13 @@ class WithTotalViewHandler
     {
         $this->validateView($view);
 
-        $viewData = $view->getData();
+        /** @var PaginatedCollection $paginatedCollection */
+        $paginatedCollection = $view->getData();
 
         $data = [
-            'total' => $viewData['total'],
-            'count' => count($viewData['data']),
-            'data' => $viewData['data'],
+            'total' => $paginatedCollection->total,
+            'count' => $paginatedCollection->count,
+            'data' => $paginatedCollection->items,
         ];
 
         $json = $this->serializer->serialize($data, 'json');
@@ -55,13 +57,10 @@ class WithTotalViewHandler
      */
     private function validateView(View $view)
     {
-        $viewData = $view->getData();
+        $paginatedCollection = $view->getData();
 
-        if (false === array_key_exists('data', $viewData)) {
-            throw new \RuntimeException("Could not find mandatory 'data' node in view data");
-        }
-        if (false === array_key_exists('total', $viewData)) {
-            throw new \RuntimeException("Could not find mandatory 'total' node in view data");
+        if (false === ($paginatedCollection instanceof PaginatedCollection)) {
+            throw new \RuntimeException("View data must be an instance of PaginatedCollection");
         }
     }
 }

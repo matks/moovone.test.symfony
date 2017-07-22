@@ -2,36 +2,43 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Movie;
+use AppBundle\Domain\PaginatedCollection;
+use Doctrine\ORM\QueryBuilder;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 
 class MovieRepository extends \Doctrine\ORM\EntityRepository
 {
     const ORDER_DIRECTION_ASC = 'asc';
     const ORDER_DIRECTION_DESC = 'desc';
 
+    const ITEMS_PER_PAGE = 3;
+
     /**
-     * @param int $limit
-     * @param int $offset
+     * @param int $page
+     * @param string $order
+     * @param string $dir
      *
-     * @return Movie[]
+     * @return PaginatedCollection
      */
-    public function getMovies($limit, $offset, $order = null, $dir = null)
+    public function getMovies($page, $order = null, $dir = null)
     {
         if (null === $dir) {
             $dir = self::ORDER_DIRECTION_ASC;
         }
 
-        $this->validateInput($limit, $offset, $order, $dir);
+        $this->validateInput($page, $order, $dir);
 
-        $qb = $this->createQueryBuilder('movie')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
+        $qb = $this->createQueryBuilder('movie');
 
         if ($order !== null) {
             $qb->orderBy('movie.' . $order, $dir);
         }
 
-        return $qb->getQuery()->getResult();
+        $pagerFanta = $this->applyPagerFanta($qb, $page);
+        $paginatedCollection = $this->buildPaginatedCollection($pagerFanta);
+
+        return $paginatedCollection;
     }
 
     /**
@@ -57,20 +64,49 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param int $limit
-     * @param int $offset
+     * @param QueryBuilder $queryBuilder
+     * @param int $page
+     *
+     * @return Pagerfanta
+     */
+    private function applyPagerFanta(QueryBuilder $queryBuilder, $page)
+    {
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(self::ITEMS_PER_PAGE);
+        $pagerfanta->setCurrentPage($page);
+
+        return $pagerfanta;
+    }
+
+    /**
+     * @param Pagerfanta $pagerfanta
+     *
+     * @return PaginatedCollection
+     */
+    private function buildPaginatedCollection(Pagerfanta $pagerfanta)
+    {
+        $items = $pagerfanta->getCurrentPageResults();
+
+        $paginatedCollection = new PaginatedCollection(
+            $items,
+            $pagerfanta->getNbResults()
+        );
+
+        return $paginatedCollection;
+    }
+
+    /**
+     * @param int $page
      * @param string $order
      * @param string $dir
      *
      * @throws \InvalidArgumentException
      */
-    private function validateInput($limit, $offset, $order, $dir)
+    private function validateInput($page, $order, $dir)
     {
-        if (0 === $limit) {
-            throw new \InvalidArgumentException('Limit cannot be 0');
-        }
-        if (0 > $offset) {
-            throw new \InvalidArgumentException('Offset must be positive');
+        if (0 > $page) {
+            throw new \InvalidArgumentException('Page must be positive');
         }
 
         if (null !== $order) {

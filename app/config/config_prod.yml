@@ -19,3 +19,8 @@ monolog:
             level: debug
         console:
             type:  console
+
+fos_rest:
+    exception:
+        enabled: true
+        exception_controller: 'AppBundle\Controller\ExceptionController::handleException'

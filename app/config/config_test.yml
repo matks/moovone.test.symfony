@@ -16,3 +16,8 @@ swiftmailer:
     disable_delivery: true
 
 liip_functional_test: ~
+
+fos_rest:
+    exception:
+        enabled: true
+        exception_controller: 'AppBundle\Controller\ExceptionController::handleException'

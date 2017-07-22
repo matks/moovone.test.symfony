@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MoviesController extends Controller
 {
-    const ITEMS_PER_PAGE = 3;
 
     /**
      * @return array
@@ -19,15 +18,12 @@ class MoviesController extends Controller
     {
         $order = $request->get('order');
         $dir = $request->get('dir');
+        $page = $request->query->get('page', 1);
 
         $movieRepository = $this->getMoviesRepository();
-        $movies = $movieRepository->getMovies(self::ITEMS_PER_PAGE, 0, $order, $dir);
-        $total = $movieRepository->countAll();
+        $moviesPage = $movieRepository->getMovies($page, $order, $dir);
 
-        return [
-            'data' => $movies,
-            'total' => $total,
-        ];
+        return $moviesPage;
     }
 
     /**
