@@ -5,8 +5,8 @@ namespace AppBundle\View;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class WithTotalViewHandler
 {
@@ -29,7 +29,7 @@ class WithTotalViewHandler
      * @param Request $request
      * @param string $format
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function createResponse(ViewHandler $handler, View $view, Request $request, $format)
     {
@@ -45,7 +45,7 @@ class WithTotalViewHandler
 
         $json = $this->serializer->serialize($data, 'json');
 
-        return new Response($json, 200, $view->getHeaders());
+        return new JsonResponse($json, 200, $view->getHeaders(), true);
     }
 
     /**

@@ -1,10 +1,10 @@
 services:
 
-    moovone_movie.rss_handler:
+    moovone_movie.json_view_handler:
         class: AppBundle\View\WithTotalViewHandler
         arguments: ['@jms_serializer']
 
     moovone_movie.view_handler:
         parent: 'fos_rest.view_handler.default'
         calls:
-            - ['registerHandler', [ 'moovone_format', [ '@moovone_movie.rss_handler', 'createResponse'] ] ]
+            - ['registerHandler', [ 'moovone_format', [ '@moovone_movie.json_view_handler', 'createResponse'] ] ]

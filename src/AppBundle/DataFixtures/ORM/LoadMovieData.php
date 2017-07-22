@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Movie;
 use Doctrine\Common\DataFixtures\FixtureInterface;
