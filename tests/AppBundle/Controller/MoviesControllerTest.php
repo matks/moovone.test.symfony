@@ -125,4 +125,38 @@ class MoviesControllerTest extends BaseController
         $this->assertJsonResponse($response, Response::HTTP_OK);
         $this->assertJsonContent($response, $expectedData);
     }
+
+    public function testDeleteMovie()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('DELETE', '/v1/movies/3');
+        $response1 = $client->getResponse();
+
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response1->getStatusCode());
+
+        $crawler = $client->request('GET', '/v1/movies');
+        $response2 = $client->getResponse();
+
+        $expectedData = [
+            'total' => 29,
+            'count' => 3,
+            'data' => [
+                [
+                    'id' => 1,
+                    'name' => 'Harry Potter et la chambre des secrets'
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Fast and Furious 8'
+                ],
+                [
+                    'id' => 4,
+                    'name' => 'Another great movie 1'
+                ],
+            ]
+        ];
+
+        $this->assertJsonContent($response2, $expectedData);
+    }
 }

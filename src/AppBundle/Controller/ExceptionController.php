@@ -19,7 +19,7 @@ class ExceptionController extends Controller
         $exception = $parameters->get('exception');
 
         switch (true) {
-            case ($exception instanceof \InvalidArgumentException):
+            case $exception instanceof \InvalidArgumentException:
                 $message = $exception->getMessage();
 
                 $data = [
@@ -30,7 +30,7 @@ class ExceptionController extends Controller
                 return new JsonResponse($data, Response::HTTP_BAD_REQUEST);
                 break;
 
-            case ($exception instanceof NotFoundHttpException):
+            case $exception instanceof NotFoundHttpException:
                 return new JsonResponse('Unknown endpoint', Response::HTTP_NOT_FOUND);
 
             default:

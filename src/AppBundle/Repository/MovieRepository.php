@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Domain\PaginatedCollection;
+use AppBundle\Entity\Movie;
 use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -15,7 +16,7 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
     const ITEMS_PER_PAGE = 3;
 
     /**
-     * @param int $page
+     * @param int    $page
      * @param string $order
      * @param string $dir
      *
@@ -29,10 +30,12 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
 
         $this->validateInput($page, $order, $dir);
 
-        $qb = $this->createQueryBuilder('movie');
+        $qb = $this->createQueryBuilder('movie')
+            ->where('movie.status = :validStatus')
+            ->setParameter('validStatus', Movie::STATUS_VALID);
 
         if ($order !== null) {
-            $qb->orderBy('movie.' . $order, $dir);
+            $qb->orderBy('movie.'.$order, $dir);
         }
 
         $pagerFanta = $this->applyPagerFanta($qb, $page);
@@ -47,7 +50,9 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
     public function countAll()
     {
         $qb = $this->createQueryBuilder('movie')
-            ->select('COUNT(movie)');
+            ->select('COUNT(movie)')
+            ->where('movie.status = :validStatus')
+            ->setParameter('validStatus', Movie::STATUS_VALID);
 
         return $qb->getQuery()->getSingleScalarResult();
     }
@@ -59,13 +64,13 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
     {
         return [
             self::ORDER_DIRECTION_ASC,
-            self::ORDER_DIRECTION_DESC
+            self::ORDER_DIRECTION_DESC,
         ];
     }
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param int $page
+     * @param int          $page
      *
      * @return Pagerfanta
      */
@@ -97,7 +102,7 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param int $page
+     * @param int    $page
      * @param string $order
      * @param string $dir
      *
@@ -117,7 +122,7 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
                 $availableValuesAsString = implode(', ', self::getAvailableDirValues());
 
                 throw new \InvalidArgumentException(sprintf(
-                    "Dir must be one of those: %s",
+                    'Dir must be one of those: %s',
                     $availableValuesAsString
                 ));
             }

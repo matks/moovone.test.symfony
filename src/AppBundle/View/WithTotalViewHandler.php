@@ -30,9 +30,9 @@ class WithTotalViewHandler
 
     /**
      * @param ViewHandler $viewHandler
-     * @param View $view
-     * @param Request $request
-     * @param string $format
+     * @param View        $view
+     * @param Request     $request
+     * @param string      $format
      *
      * @return JsonResponse
      */
@@ -64,7 +64,7 @@ class WithTotalViewHandler
         $paginatedCollection = $view->getData();
 
         if (false === ($paginatedCollection instanceof PaginatedCollection)) {
-            throw new \RuntimeException("View data must be an instance of PaginatedCollection");
+            throw new \RuntimeException('View data must be an instance of PaginatedCollection');
         }
     }
 

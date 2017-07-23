@@ -8,3 +8,7 @@ services:
         parent: 'fos_rest.view_handler.default'
         calls:
             - ['registerHandler', [ 'moovone_format', [ '@moovone_movie.json_view_handler', 'createResponse'] ] ]
+
+    moovone_movie.movies_manager:
+        class: AppBundle\Domain\MoviesManager
+        arguments: ['@doctrine']

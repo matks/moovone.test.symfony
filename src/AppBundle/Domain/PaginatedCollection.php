@@ -18,7 +18,7 @@ class PaginatedCollection
 
     /**
      * @param array|\Traversable $items
-     * @param int $total
+     * @param int                $total
      */
     public function __construct($items, $total)
     {
