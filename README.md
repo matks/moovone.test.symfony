@@ -1,54 +1,39 @@
 # MoovOne test Symfony
 
-L'objectif de ce test est de réaliser une micro API.
-Cette api devra retourner une liste de films.
+# Install
 
-### minimum requis : 
-
-- utiliser le bundle [FosRestBundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html) 
-- créer l'entité `movies`
-- créer la route qui retournera la liste des films au format REST/JSON.
-- privilégiez les annotations
-
-Voici le résultat voulu : 
-
-`/v1/movies`
+Install dependencies with composer binary:
 
 ```
-{
-    "total":"30"
-    "count":"3"
-    "data":[
-        {"id":0,"name":"Harry Potter et la chambre des secrets"},
-        {"id":0,"name":"Fast and Furious 8"},
-        {"id":0,"name":"Taken 3"}  
-    ]
-}
+$ php composer.phar install
 ```
 
-### bonus : 
+Configure `app/config/parameters.yml` to enable access to your database
 
-il serait fortement apprécié que vous alliez plus loins et ...
-
-- que vous ajoutiez les films via une fixture 
-- que votre controller soit convert par un lot de test unitaires/fonctionnels
-- que la liste des films soit ordonable via le param "order" enum(name) et "dir" enum(asc|desc)
-- que la liste des films soit paginable avec un bundle comme PagerFanta 
-- que le controller soit serialisé via un group "movie"
-- que les id soient remplacés à la volée par un hashid via un event listener
-- que vous ajoutiez la method post /v1/movies et que vous utilisiez un form type
-- que vous ajoutiez la methode delete avec un soft deleted 
-- respet des PSR
-
-### astuce : 
-
-- Symfony contient un serveur de dev 
+Then create schema and load fixtures:
 
 ```
-$ php bin/console server:run
+$ php app/console doctrine:schema:create
+$ php app/console doctrine:fixtures:load
 ```
 
-Votre application est accessible à l'adressse `http://localhost:8000`.
+Check your install is correct by running the following command:
+```
+$ php app/console server:run
+```
 
+This will start a php webserver, you should now be able to browse http://127.0.0.1:8000/ .
 
+# Run tests
 
+## Unit tests
+
+No test available
+
+## Functional tests
+
+Run Symfony functional tests using phpunit binary:
+
+```
+$  vendor/bin/phpunit
+```
