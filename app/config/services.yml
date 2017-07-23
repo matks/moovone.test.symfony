@@ -11,4 +11,4 @@ services:
 
     moovone_movie.movies_manager:
         class: AppBundle\Domain\MoviesManager
-        arguments: ['@doctrine']
+        arguments: ['@doctrine', '@validator']

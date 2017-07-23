@@ -36,6 +36,15 @@ class MoviesController extends FOSRestController
         return $view;
     }
 
+    public function postMovieAction(Request $request)
+    {
+        $name = $request->get('name');
+
+        $movie = $this->getMoviesManager()->registerMovie($name);
+
+        return new JsonResponse('ok', Response::HTTP_OK);
+    }
+
     /**
      * @param int $movieId
      *

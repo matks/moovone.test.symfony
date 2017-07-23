@@ -126,6 +126,73 @@ class MoviesControllerTest extends BaseController
         $this->assertJsonContent($response, $expectedData);
     }
 
+    public function testRegisterMovie()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('POST', '/v1/movies', ['name' => 'Nemo']);
+        $response1 = $client->getResponse();
+
+        $this->assertEquals(Response::HTTP_OK, $response1->getStatusCode());
+
+        $crawler = $client->request('GET', '/v1/movies?order=name&dir=desc');
+        $response2 = $client->getResponse();
+
+        $expectedData = [
+            'total' => 31,
+            'count' => 3,
+            'data' => [
+                [
+                    'id' => 3,
+                    'name' => 'Taken 3'
+                ],
+                [
+                    'id' => 31,
+                    'name' => 'Nemo'
+                ],
+                [
+                    'id' => 1,
+                    'name' => 'Harry Potter et la chambre des secrets'
+                ],
+            ]
+        ];
+
+        $this->assertJsonContent($response2, $expectedData);
+    }
+
+    public function testRegisterMovieWithoutName()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('POST', '/v1/movies');
+        $response1 = $client->getResponse();
+
+        $expectedData1 = [
+            'error' => 'Bad query',
+            'message' => 'name : This value should not be blank.',
+        ];
+
+        $this->assertJsonResponse($response1, Response::HTTP_BAD_REQUEST);
+        $this->assertJsonContent($response1, $expectedData1);
+    }
+
+    public function testRegisterMovieTwice()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('POST', '/v1/movies', ['name' => 'Nemo']);
+        $crawler = $client->request('POST', '/v1/movies', ['name' => 'Nemo']);
+        $response1 = $client->getResponse();
+
+        $expectedData1 = [
+            'error' => 'Bad query',
+            'message' => 'name : This value is already used.',
+        ];
+
+        $this->assertJsonResponse($response1, Response::HTTP_BAD_REQUEST);
+        $this->assertJsonContent($response1, $expectedData1);
+    }
+
     public function testDeleteMovie()
     {
         $client = static::createClient();

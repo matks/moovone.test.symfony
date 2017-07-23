@@ -4,10 +4,13 @@ namespace AppBundle\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="movie")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MovieRepository")
+ * @UniqueEntity("name")
  *
  * @Serializer\ExclusionPolicy("all")
  */
@@ -48,6 +51,9 @@ class Movie
      * @Serializer\Type("string")
      * @Serializer\Expose
      * @Serializer\Groups({"movie", "all"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private $name;
 
