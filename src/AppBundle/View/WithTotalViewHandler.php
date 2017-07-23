@@ -5,10 +5,14 @@ namespace AppBundle\View;
 use AppBundle\Domain\PaginatedCollection;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @see https://github.com/liip/LiipHelloBundle
+ */
 class WithTotalViewHandler
 {
     /**
@@ -44,8 +48,8 @@ class WithTotalViewHandler
             'count' => $paginatedCollection->count,
             'data' => $paginatedCollection->items,
         ];
-
-        $json = $this->serializer->serialize($data, 'json');
+        $movieGroup = $this->getMovieSerializationGroup($view->getContext()->getGroups());
+        $json = $this->serializer->serialize($data, 'json', $movieGroup);
 
         return new JsonResponse($json, 200, $view->getHeaders(), true);
     }
@@ -62,5 +66,15 @@ class WithTotalViewHandler
         if (false === ($paginatedCollection instanceof PaginatedCollection)) {
             throw new \RuntimeException("View data must be an instance of PaginatedCollection");
         }
+    }
+
+    /**
+     * @return SerializationContext
+     */
+    private function getMovieSerializationGroup($groups)
+    {
+        $context = SerializationContext::create()->setGroups($groups);
+
+        return $context;
     }
 }

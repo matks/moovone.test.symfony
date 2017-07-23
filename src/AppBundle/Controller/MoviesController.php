@@ -3,16 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Repository\MovieRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use FOS\RestBundle\Controller\Annotations\View;
+use FOS\RestBundle\Context\Context;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 
-class MoviesController extends Controller
+class MoviesController extends FOSRestController
 {
 
     /**
      * @return array
-     * @View()
      */
     public function getMoviesAction(Request $request)
     {
@@ -23,7 +22,13 @@ class MoviesController extends Controller
         $movieRepository = $this->getMoviesRepository();
         $moviesPage = $movieRepository->getMovies($page, $order, $dir);
 
-        return $moviesPage;
+        $context = new Context();
+        $context->setGroups(['movie']);
+
+        $view = $this->view($moviesPage);
+        $view->setContext($context);
+
+        return $view;
     }
 
     /**

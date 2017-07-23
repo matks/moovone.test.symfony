@@ -2,11 +2,14 @@
 
 namespace AppBundle\Entity;
 
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="movie")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MovieRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Movie
 {
@@ -16,13 +19,32 @@ class Movie
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"movie", "all"})
      */
     private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     *
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Expose
+     * @Serializer\Groups({"all"})
+     */
+    private $createdAt;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Serializer\Type("string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"movie", "all"})
      */
     private $name;
 
@@ -32,6 +54,7 @@ class Movie
     public function __construct($name)
     {
         $this->name = $name;
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -40,6 +63,14 @@ class Movie
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
