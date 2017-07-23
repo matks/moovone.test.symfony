@@ -2,9 +2,6 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use JMS\Serializer\SerializerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExceptionControllerTest extends BaseController

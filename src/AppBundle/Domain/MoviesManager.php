@@ -20,7 +20,7 @@ class MoviesManager
     private $validator;
 
     /**
-     * @param ManagerRegistry $doctrine
+     * @param ManagerRegistry    $doctrine
      * @param ValidatorInterface $validator
      */
     public function __construct(ManagerRegistry $doctrine, ValidatorInterface $validator)
@@ -87,7 +87,7 @@ class MoviesManager
         $errorMessages = [];
 
         foreach ($list as $violation) {
-            $errorMessages[] = $violation->getPropertyPath() . ' : ' . $violation->getMessage();
+            $errorMessages[] = $violation->getPropertyPath().' : '.$violation->getMessage();
         }
 
         return $errorMessages;

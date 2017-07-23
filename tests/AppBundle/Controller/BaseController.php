@@ -47,7 +47,7 @@ class BaseController extends WebTestCase implements ContainerAwareInterface
 
     /**
      * @param Response $response
-     * @param string $status
+     * @param string   $status
      */
     protected function assertJsonResponse(Response $response, $status)
     {
@@ -60,14 +60,12 @@ class BaseController extends WebTestCase implements ContainerAwareInterface
 
     /**
      * @param Response $response
-     *
-     * @param array $expectedData
+     * @param array    $expectedData
      */
     protected function assertJsonContent(Response $response, array $expectedData)
     {
         $realData = $response->getContent();
         $realData = str_replace('\u0027', "'", $realData);
-
 
         $this->assertEquals($this->serialize($expectedData), $realData);
     }
@@ -81,7 +79,7 @@ class BaseController extends WebTestCase implements ContainerAwareInterface
     {
         $data = json_decode($json);
 
-        return (null !== $data);
+        return null !== $data;
     }
 
     /**

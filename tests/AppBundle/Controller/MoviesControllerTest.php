@@ -2,9 +2,6 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use JMS\Serializer\SerializerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class MoviesControllerTest extends BaseController
@@ -22,17 +19,17 @@ class MoviesControllerTest extends BaseController
             'data' => [
                 [
                     'id' => 1,
-                    'name' => 'Harry Potter et la chambre des secrets'
+                    'name' => 'Harry Potter et la chambre des secrets',
                 ],
                 [
                     'id' => 2,
-                    'name' => 'Fast and Furious 8'
+                    'name' => 'Fast and Furious 8',
                 ],
                 [
                     'id' => 3,
-                    'name' => 'Taken 3'
+                    'name' => 'Taken 3',
                 ],
-            ]
+            ],
         ];
 
         $this->assertJsonResponse($response, Response::HTTP_OK);
@@ -79,17 +76,17 @@ class MoviesControllerTest extends BaseController
             'data' => [
                 [
                     'id' => 3,
-                    'name' => 'Taken 3'
+                    'name' => 'Taken 3',
                 ],
                 [
                     'id' => 1,
-                    'name' => 'Harry Potter et la chambre des secrets'
+                    'name' => 'Harry Potter et la chambre des secrets',
                 ],
                 [
                     'id' => 2,
-                    'name' => 'Fast and Furious 8'
+                    'name' => 'Fast and Furious 8',
                 ],
-            ]
+            ],
         ];
 
         $this->assertJsonResponse($response, Response::HTTP_OK);
@@ -109,17 +106,17 @@ class MoviesControllerTest extends BaseController
             'data' => [
                 [
                     'id' => 7,
-                    'name' => "Another great movie 4"
+                    'name' => 'Another great movie 4',
                 ],
                 [
                     'id' => 8,
-                    'name' => "Another great movie 5"
+                    'name' => 'Another great movie 5',
                 ],
                 [
                     'id' => 9,
-                    'name' => "Another great movie 6"
+                    'name' => 'Another great movie 6',
                 ],
-            ]
+            ],
         ];
 
         $this->assertJsonResponse($response, Response::HTTP_OK);
@@ -144,17 +141,17 @@ class MoviesControllerTest extends BaseController
             'data' => [
                 [
                     'id' => 3,
-                    'name' => 'Taken 3'
+                    'name' => 'Taken 3',
                 ],
                 [
                     'id' => 31,
-                    'name' => 'Nemo'
+                    'name' => 'Nemo',
                 ],
                 [
                     'id' => 1,
-                    'name' => 'Harry Potter et la chambre des secrets'
+                    'name' => 'Harry Potter et la chambre des secrets',
                 ],
-            ]
+            ],
         ];
 
         $this->assertJsonContent($response2, $expectedData);
@@ -211,17 +208,17 @@ class MoviesControllerTest extends BaseController
             'data' => [
                 [
                     'id' => 1,
-                    'name' => 'Harry Potter et la chambre des secrets'
+                    'name' => 'Harry Potter et la chambre des secrets',
                 ],
                 [
                     'id' => 2,
-                    'name' => 'Fast and Furious 8'
+                    'name' => 'Fast and Furious 8',
                 ],
                 [
                     'id' => 4,
-                    'name' => 'Another great movie 1'
+                    'name' => 'Another great movie 1',
                 ],
-            ]
+            ],
         ];
 
         $this->assertJsonContent($response2, $expectedData);
